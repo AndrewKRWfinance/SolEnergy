@@ -3,85 +3,77 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Equipment Finance Calculator | Solar Finance Australia</title>
+  <title>Solar Finance Australia | Equipment Finance Calculator</title>
   <style>
-    :root { --green:#3d8446; --green-dark:#285f32; --charcoal:#34423f; --pale:#edf6ee; --line:#cfe1d1; --blue:#dceef8; --white:#fff; }
-    * { box-sizing:border-box; }
-    body { margin:0; font-family:Arial, Helvetica, sans-serif; color:var(--charcoal); background:linear-gradient(135deg,#eef6ef,#fff 50%,#e4f0e5); min-height:100vh; }
-    .page { width:min(920px,calc(100% - 28px)); margin:32px auto; background:var(--white); border-radius:18px; box-shadow:0 14px 38px rgba(36,79,43,.16); overflow:hidden; }
-    header { padding:24px 32px 16px; border-bottom:5px solid var(--green); text-align:center; }
-    .logo { max-width:560px; width:100%; height:auto; display:block; margin:auto; }
-    main { padding:30px 36px 34px; }
-    h1 { margin:0 0 4px; color:var(--green-dark); font-size:clamp(1.6rem,4vw,2.4rem); text-align:center; }
-    .edition { text-align:center; margin:0 0 26px; color:#65716e; }
-    .input-panel { max-width:560px; margin:0 auto 28px; padding:22px; background:var(--pale); border:1px solid var(--line); border-radius:14px; }
-    label { display:block; font-weight:700; margin-bottom:8px; }
-    .money-input { display:flex; align-items:center; border:2px solid var(--green); border-radius:10px; background:#fff; overflow:hidden; }
-    .money-input span { padding:13px 0 13px 15px; font-size:1.2rem; font-weight:700; }
-    input { width:100%; padding:13px 14px 13px 7px; border:0; outline:0; font-size:1.2rem; background:transparent; }
-    input:focus-visible { box-shadow:inset 0 0 0 3px rgba(61,132,70,.25); }
-    .hint { margin:8px 0 0; font-size:.9rem; color:#60706b; }
-    .message { min-height:24px; margin:10px 0 0; color:#a22323; font-weight:700; }
-    .results { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin:0 0 26px; }
-    .result { border:1px solid var(--line); border-top:6px solid var(--green); border-radius:12px; padding:18px 14px; text-align:center; background:#fff; }
-    .term { font-weight:700; color:#66726f; }
-    .amount { font-size:clamp(1.55rem,5vw,2.25rem); color:var(--green-dark); font-weight:800; margin:8px 0 3px; }
-    .frequency { font-size:.88rem; color:#6b7774; }
-    .notes { background:#f8faf8; border-left:5px solid var(--green); padding:15px 20px; border-radius:8px; }
-    .notes ul { margin:0; padding-left:20px; line-height:1.55; }
-    .contact { margin-top:24px; padding-top:20px; border-top:1px solid var(--line); text-align:center; line-height:1.55; }
-    .contact strong { color:var(--green-dark); }
-    .actions { display:flex; justify-content:center; margin-top:24px; }
-    button { border:0; border-radius:10px; padding:13px 24px; background:var(--green); color:#fff; font-weight:700; font-size:1rem; cursor:pointer; }
-    button:hover { background:var(--green-dark); }
-    button:focus-visible { outline:3px solid #9fc8a4; outline-offset:3px; }
-    @media (max-width:650px) { main{padding:24px 18px}.results{grid-template-columns:1fr}.page{margin:14px auto}.logo{max-width:450px} }
-    @media print { body{background:#fff}.page{width:100%;margin:0;box-shadow:none;border-radius:0}.actions{display:none}.input-panel{break-inside:avoid}.result{break-inside:avoid} }
+    :root{--green:#367d3f;--green-dark:#263d35;--green-light:#eaf4eb;--ink:#24312c;--muted:#617068;--line:#d7e2da;--white:#fff;--blue:#e8f3fb;--blue-border:#8dbbd7;--danger:#a52222}
+    *{box-sizing:border-box} body{margin:0;background:#f3f6f3;color:var(--ink);font-family:Arial,Helvetica,sans-serif;line-height:1.45}
+    .page{max-width:980px;margin:30px auto;background:var(--white);box-shadow:0 12px 34px rgba(24,55,35,.12);border-radius:18px;overflow:hidden}
+    header{padding:24px 34px 18px;border-bottom:4px solid var(--green)}
+    .logo{display:block;max-width:520px;width:100%;height:auto;margin:auto}
+    main{padding:28px 34px 34px}.title{text-align:center;margin:0;color:var(--green-dark);font-size:clamp(1.5rem,3vw,2.25rem)}
+    .date{text-align:center;color:var(--muted);margin:4px 0 24px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 22px;max-width:690px;margin:auto}
+    label{font-weight:700;align-self:center}.field-wrap{position:relative}.prefix{position:absolute;left:15px;top:50%;transform:translateY(-50%);font-weight:700;color:var(--green-dark)}
+    input{width:100%;padding:13px 14px 13px 32px;border:2px solid var(--blue-border);background:var(--blue);border-radius:9px;font-size:1.08rem;color:var(--ink)}
+    input:focus{outline:3px solid rgba(54,125,63,.2);border-color:var(--green)}.loan{max-width:690px;margin:17px auto 26px;padding:13px 16px;border-radius:9px;background:var(--green-light);display:flex;justify-content:space-between;gap:20px;font-weight:700}
+    .results{overflow-x:auto}.results table{border-collapse:collapse;width:100%;min-width:590px}.results th,.results td{padding:14px 12px;text-align:right;border-bottom:1px solid var(--line)}
+    .results th:first-child,.results td:first-child{text-align:left}.results thead th{background:var(--green-dark);color:white}.results tbody tr:last-child{font-weight:800;background:var(--green-light);color:var(--green-dark)}
+    .message{min-height:28px;text-align:center;margin:12px 0;color:var(--danger);font-weight:700}.notes{margin-top:25px;padding:18px 20px;background:#fafcf9;border-left:5px solid var(--green);font-size:.94rem}.notes ul{margin:8px 0;padding-left:20px}
+    .contact{margin-top:20px;text-align:center;color:var(--green-dark)}.actions{text-align:center;margin-top:24px}button{border:0;border-radius:9px;background:var(--green);color:#fff;padding:12px 24px;font-weight:800;font-size:1rem;cursor:pointer}button:hover{background:#2c6b34}button:focus{outline:3px solid rgba(54,125,63,.28);outline-offset:2px}
+    @media(max-width:650px){.page{margin:0;border-radius:0}.form-grid{grid-template-columns:1fr;gap:7px}header,main{padding-left:20px;padding-right:20px}.logo{max-width:420px}.loan{align-items:center}}
+    @media print{body{background:#fff}.page{margin:0;max-width:none;box-shadow:none}.actions{display:none}header{padding-top:0}.notes{break-inside:avoid}.results{overflow:visible}.results table{min-width:0}}
   </style>
 </head>
 <body>
   <div class="page">
-    <header><img class="logo" src="logo.jpeg" alt="Solar Finance Australia"></header>
+    <header><img class="logo" src="solar-finance-logo.jpeg" alt="Solar Finance Australia"></header>
     <main>
-      <h1>Equipment Finance Calculator</h1>
-      <p class="edition">October 2026</p>
-      <section class="input-panel">
-        <label for="equipmentPrice">Equipment Price (including GST)</label>
-        <div class="money-input"><span>$</span><input id="equipmentPrice" type="number" min="20000" max="250000" step="100" value="88000" inputmode="decimal" aria-describedby="priceHint error"></div>
-        <p class="hint" id="priceHint">Enter an amount from $20,000 to $250,000.</p>
-        <p class="message" id="error" role="alert" aria-live="polite"></p>
-      </section>
-      <section class="results" aria-label="Indicative monthly payments">
-        <article class="result"><div class="term">36 months</div><div class="amount" id="p36">Calculating…</div><div class="frequency">per month</div></article>
-        <article class="result"><div class="term">48 months</div><div class="amount" id="p48">Calculating…</div><div class="frequency">per month</div></article>
-        <article class="result"><div class="term">60 months</div><div class="amount" id="p60">Calculating…</div><div class="frequency">per month</div></article>
-      </section>
-      <section class="notes"><ul><li>Payments are based on a chattel mortgage loan.</li><li>NIL balloon value.</li><li>Inclusive of all fees.</li><li>Subject to credit approval.</li><li>Amounts above $250,000 are quoted individually.</li></ul></section>
-      <section class="contact">For all enquiries or to discuss a deal in more detail, please contact<br><strong>David Mackie</strong><br>Phone: <a href="tel:0401755974">0401 755 974</a><br>Email: <a href="mailto:finance@apaust.au">finance@apaust.au</a></section>
-      <div class="actions"><button type="button" id="printButton">Print calculator</button></div>
+      <h1 class="title">Equipment Finance Calculator</h1><p class="date">October 2026</p>
+      <form id="calculator" novalidate>
+        <div class="form-grid">
+          <label for="equipmentPrice">Equipment Price (inc GST)</label><div class="field-wrap"><span class="prefix">$</span><input id="equipmentPrice" name="equipmentPrice" type="number" min="0" step="100" value="88000" inputmode="decimal"></div>
+          <label for="deposit">Deposit</label><div class="field-wrap"><span class="prefix">$</span><input id="deposit" name="deposit" type="number" min="0" step="100" value="8000" inputmode="decimal"></div>
+          <label for="energySavings">Energy Savings per month</label><div class="field-wrap"><span class="prefix">$</span><input id="energySavings" name="energySavings" type="number" min="0" step="10" value="2000" inputmode="decimal"></div>
+        </div>
+        <div class="loan"><span>Loan Amount</span><output id="loanAmount">$80,000</output></div>
+      </form>
+      <div id="message" class="message" role="status" aria-live="polite"></div>
+      <div class="results">
+        <table aria-label="Calculated monthly finance options"><thead><tr><th>Finance Term</th><th>36 months</th><th>48 months</th><th>60 months</th></tr></thead>
+          <tbody><tr><th>Finance Payment</th><td id="pay36">$0</td><td id="pay48">$0</td><td id="pay60">$0</td></tr>
+          <tr><th>Energy Savings</th><td id="save36">$0</td><td id="save48">$0</td><td id="save60">$0</td></tr>
+          <tr><th>Net Cost per month</th><td id="net36">$0</td><td id="net48">$0</td><td id="net60">$0</td></tr></tbody>
+        </table>
+      </div>
+      <section class="notes"><strong>Important information</strong><ul><li>Payments are based on a chattel mortgage loan.</li><li>NIL balloon value.</li><li>Inclusive of all fees.</li><li>Subject to credit approval.</li><li>Calculator minimum $20,000 and maximum $250,000. Larger amounts are quoted individually.</li></ul></section>
+      <div class="contact">For all enquiries or to discuss a deal in more detail please contact<br><strong>David Mackie</strong><br>Phone: <strong>0401 755 974</strong><br>Email: <strong>finance@apaust.au</strong></div>
+      <div class="actions"><button type="button" id="printButton">Print Calculator</button></div>
     </main>
   </div>
-  <script>
-    const input = document.getElementById('equipmentPrice');
-    const error = document.getElementById('error');
-    const output = {36:document.getElementById('p36'),48:document.getElementById('p48'),60:document.getElementById('p60')};
-    const money = new Intl.NumberFormat('en-AU',{style:'currency',currency:'AUD',maximumFractionDigits:0});
-    let timer;
-    function clearPayments(text='—'){ Object.values(output).forEach(el=>el.textContent=text); }
-    async function calculate(){
-      const invoicePrice = Number(input.value);
-      if(!Number.isFinite(invoicePrice) || input.value.trim()===''){ error.textContent='Enter an equipment price.'; clearPayments(); return; }
-      try{
-        const response = await fetch('/api/calculate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({invoicePrice})});
-        const data = await response.json();
-        if(!response.ok) throw new Error(data.error || 'Unable to calculate payments.');
-        error.textContent='';
-        data.payments.forEach(item=>{ output[item.term].textContent=money.format(item.payment); });
-      }catch(e){ error.textContent=e.message; clearPayments(); }
-    }
-    input.addEventListener('input',()=>{ clearTimeout(timer); timer=setTimeout(calculate,180); });
-    document.getElementById('printButton').addEventListener('click',()=>window.print());
-    calculate();
-  </script>
-</body>
-</html>
+<script>
+(() => {
+  const form = document.getElementById('calculator');
+  const fields = [...form.querySelectorAll('input')];
+  const message = document.getElementById('message');
+  const money = new Intl.NumberFormat('en-AU',{style:'currency',currency:'AUD',maximumFractionDigits:0});
+  let requestNumber = 0;
+  const setText=(id,value)=>document.getElementById(id).textContent=value;
+  const clearResults=()=>[36,48,60].forEach(t=>{setText('pay'+t,'—');setText('save'+t,'—');setText('net'+t,'—')});
+  async function calculate(){
+    const current=++requestNumber;
+    const payload=Object.fromEntries(fields.map(f=>[f.name,f.value]));
+    const equipment=Number(payload.equipmentPrice), deposit=Number(payload.deposit);
+    setText('loanAmount', Number.isFinite(equipment-deposit)?money.format(equipment-deposit):'—');
+    try{
+      const response=await fetch('/api/calculate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+      const data=await response.json(); if(current!==requestNumber)return;
+      if(!response.ok||!data.valid){message.textContent=data.error||data.message||'Unable to calculate.';clearResults();return;}
+      message.textContent=''; setText('loanAmount',money.format(data.loanAmount));
+      data.results.forEach(r=>{setText('pay'+r.term,money.format(r.financePayment));setText('save'+r.term,money.format(r.energySavings));setText('net'+r.term,money.format(r.netCost))});
+    }catch(_){if(current===requestNumber){message.textContent='The calculator is temporarily unavailable.';clearResults();}}
+  }
+  fields.forEach(field=>field.addEventListener('input',calculate));
+  document.getElementById('printButton').addEventListener('click',()=>window.print());
+  calculate();
+})();
+</script>
+</body></html>
