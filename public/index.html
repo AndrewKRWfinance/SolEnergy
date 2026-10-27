@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Equipment Finance Calculator | Solar Finance Australia</title>
+  <style>
+    :root { --green:#3d8446; --green-dark:#285f32; --charcoal:#34423f; --pale:#edf6ee; --line:#cfe1d1; --blue:#dceef8; --white:#fff; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:Arial, Helvetica, sans-serif; color:var(--charcoal); background:linear-gradient(135deg,#eef6ef,#fff 50%,#e4f0e5); min-height:100vh; }
+    .page { width:min(920px,calc(100% - 28px)); margin:32px auto; background:var(--white); border-radius:18px; box-shadow:0 14px 38px rgba(36,79,43,.16); overflow:hidden; }
+    header { padding:24px 32px 16px; border-bottom:5px solid var(--green); text-align:center; }
+    .logo { max-width:560px; width:100%; height:auto; display:block; margin:auto; }
+    main { padding:30px 36px 34px; }
+    h1 { margin:0 0 4px; color:var(--green-dark); font-size:clamp(1.6rem,4vw,2.4rem); text-align:center; }
+    .edition { text-align:center; margin:0 0 26px; color:#65716e; }
+    .input-panel { max-width:560px; margin:0 auto 28px; padding:22px; background:var(--pale); border:1px solid var(--line); border-radius:14px; }
+    label { display:block; font-weight:700; margin-bottom:8px; }
+    .money-input { display:flex; align-items:center; border:2px solid var(--green); border-radius:10px; background:#fff; overflow:hidden; }
+    .money-input span { padding:13px 0 13px 15px; font-size:1.2rem; font-weight:700; }
+    input { width:100%; padding:13px 14px 13px 7px; border:0; outline:0; font-size:1.2rem; background:transparent; }
+    input:focus-visible { box-shadow:inset 0 0 0 3px rgba(61,132,70,.25); }
+    .hint { margin:8px 0 0; font-size:.9rem; color:#60706b; }
+    .message { min-height:24px; margin:10px 0 0; color:#a22323; font-weight:700; }
+    .results { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin:0 0 26px; }
+    .result { border:1px solid var(--line); border-top:6px solid var(--green); border-radius:12px; padding:18px 14px; text-align:center; background:#fff; }
+    .term { font-weight:700; color:#66726f; }
+    .amount { font-size:clamp(1.55rem,5vw,2.25rem); color:var(--green-dark); font-weight:800; margin:8px 0 3px; }
+    .frequency { font-size:.88rem; color:#6b7774; }
+    .notes { background:#f8faf8; border-left:5px solid var(--green); padding:15px 20px; border-radius:8px; }
+    .notes ul { margin:0; padding-left:20px; line-height:1.55; }
+    .contact { margin-top:24px; padding-top:20px; border-top:1px solid var(--line); text-align:center; line-height:1.55; }
+    .contact strong { color:var(--green-dark); }
+    .actions { display:flex; justify-content:center; margin-top:24px; }
+    button { border:0; border-radius:10px; padding:13px 24px; background:var(--green); color:#fff; font-weight:700; font-size:1rem; cursor:pointer; }
+    button:hover { background:var(--green-dark); }
+    button:focus-visible { outline:3px solid #9fc8a4; outline-offset:3px; }
+    @media (max-width:650px) { main{padding:24px 18px}.results{grid-template-columns:1fr}.page{margin:14px auto}.logo{max-width:450px} }
+    @media print { body{background:#fff}.page{width:100%;margin:0;box-shadow:none;border-radius:0}.actions{display:none}.input-panel{break-inside:avoid}.result{break-inside:avoid} }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header><img class="logo" src="logo.jpeg" alt="Solar Finance Australia"></header>
+    <main>
+      <h1>Equipment Finance Calculator</h1>
+      <p class="edition">October 2026</p>
+      <section class="input-panel">
+        <label for="equipmentPrice">Equipment Price (including GST)</label>
+        <div class="money-input"><span>$</span><input id="equipmentPrice" type="number" min="20000" max="250000" step="100" value="88000" inputmode="decimal" aria-describedby="priceHint error"></div>
+        <p class="hint" id="priceHint">Enter an amount from $20,000 to $250,000.</p>
+        <p class="message" id="error" role="alert" aria-live="polite"></p>
+      </section>
+      <section class="results" aria-label="Indicative monthly payments">
+        <article class="result"><div class="term">36 months</div><div class="amount" id="p36">Calculating…</div><div class="frequency">per month</div></article>
+        <article class="result"><div class="term">48 months</div><div class="amount" id="p48">Calculating…</div><div class="frequency">per month</div></article>
+        <article class="result"><div class="term">60 months</div><div class="amount" id="p60">Calculating…</div><div class="frequency">per month</div></article>
+      </section>
+      <section class="notes"><ul><li>Payments are based on a chattel mortgage loan.</li><li>NIL balloon value.</li><li>Inclusive of all fees.</li><li>Subject to credit approval.</li><li>Amounts above $250,000 are quoted individually.</li></ul></section>
+      <section class="contact">For all enquiries or to discuss a deal in more detail, please contact<br><strong>David Mackie</strong><br>Phone: <a href="tel:0401755974">0401 755 974</a><br>Email: <a href="mailto:finance@apaust.au">finance@apaust.au</a></section>
+      <div class="actions"><button type="button" id="printButton">Print calculator</button></div>
+    </main>
+  </div>
+  <script>
+    const input = document.getElementById('equipmentPrice');
+    const error = document.getElementById('error');
+    const output = {36:document.getElementById('p36'),48:document.getElementById('p48'),60:document.getElementById('p60')};
+    const money = new Intl.NumberFormat('en-AU',{style:'currency',currency:'AUD',maximumFractionDigits:0});
+    let timer;
+    function clearPayments(text='—'){ Object.values(output).forEach(el=>el.textContent=text); }
+    async function calculate(){
+      const invoicePrice = Number(input.value);
+      if(!Number.isFinite(invoicePrice) || input.value.trim()===''){ error.textContent='Enter an equipment price.'; clearPayments(); return; }
+      try{
+        const response = await fetch('/api/calculate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({invoicePrice})});
+        const data = await response.json();
+        if(!response.ok) throw new Error(data.error || 'Unable to calculate payments.');
+        error.textContent='';
+        data.payments.forEach(item=>{ output[item.term].textContent=money.format(item.payment); });
+      }catch(e){ error.textContent=e.message; clearPayments(); }
+    }
+    input.addEventListener('input',()=>{ clearTimeout(timer); timer=setTimeout(calculate,180); });
+    document.getElementById('printButton').addEventListener('click',()=>window.print());
+    calculate();
+  </script>
+</body>
+</html>
